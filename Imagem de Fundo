@@ -21,6 +21,6 @@ while rodando:
 #movendo a imagem de fundo
     imagem_de_fundo.move()
     if Boneco move.rect.y:
-        imagem_de_fundo.pygame.time.delay(1500) move.rect.y
+        imagem_de_fundo.pygame.time.delay(1500) : move.rect.y
     
 
