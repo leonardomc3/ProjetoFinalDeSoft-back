@@ -7,8 +7,7 @@ Created on Wed May  9 00:51:28 2018
 
 import pygame
 import random
-import numpy as np
-import sys
+from random import randrange
 
 white = (255,255,255)
 black = (0,0,0)
@@ -31,7 +30,6 @@ class Boneco (pygame.sprite.Sprite):
         self.vy = vel_y
         self.image = pygame.image.load(arquivo_imagem)
         self.rect = self.image.get_rect()
-    
         self.rect.x = pos_x
         self.rect.y = pos_y
     
@@ -61,22 +59,28 @@ pygame.display.set_caption('Jumper') #Nome na aba
 # carrega imagem de fundo
 fundo = pygame.image.load("Imagens/Fundo_800x600.png").convert()
 
-boneco = Boneco("Imagens/Alien_80x80.png",width/2,height/4,0,-1/10)
+boneco = Boneco("Imagens/Alien_80x80.png",width/2,height*(90/100),0,-1/10)
 boneco_group = pygame.sprite.Group()
 boneco_group.add(boneco)
-
 
 plataforma_group = pygame.sprite.Group()
 
 plataforma = Plataforma("Imagens/Plataforma_verde.png",width/2,height*(95/100))
 plataforma_group.add(plataforma)
 
-distx=250
+distx=400
 disty=100
 
 while plataforma.rect.y > disty:   #Adicionar plataformar aleatorias
     plataforma = Plataforma("Imagens/Plataforma_verde.png",plataforma.rect.x + random.randrange(-distx,distx),plataforma.rect.y-disty)
+    plataforma2 = Plataforma("Imagens/Plataforma_verde.png",random.randrange(-distx,distx),plataforma.rect.y-disty)
     plataforma_group.add(plataforma)
+    plataforma_group.add(plataforma2)
+
+score=0
+myfont = pygame.font.SysFont("monospace", 16)
+scoretext = myfont.render("Score = "+str(score), 1, (0,0,0))
+tela.blit(scoretext, (5, 10))
 
 # ===============   LOOPING PRINCIPAL   ===============
 sair = True
@@ -108,6 +112,8 @@ while sair:
         sair=False
 
     tela.blit(fundo, (0, 0))
+    scoretext = myfont.render("Score {0}".format(score), 1, (0,0,0))
+    tela.blit(scoretext, (5, 10))
     boneco_group.draw(tela)
     plataforma_group.draw(tela)
     pygame.display.update()      #coloca a tela na janela
