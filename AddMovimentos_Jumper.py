@@ -6,7 +6,6 @@ Created on Wed May  9 00:51:28 2018
 """
 
 import pygame
-import random
 from random import randint
 import numpy as np
 from random import randrange
@@ -18,10 +17,10 @@ red = (255,0,0)
 blue = (0,0,255)
 green = (0,255,0)
 
-width = 800
-height = 600
+width = 1024
+height = 1024
 size = 10
-gravity = 1
+gravity = 0.2
 
 #=========  CLASSES ==========
 
@@ -49,21 +48,6 @@ class Plataforma (pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = pos_x
         self.rect.y = pos_y
-        self.platforms = [[400, 500, 0, 0]]
-        
-    def generatePlatforms(self):
-        on = 600
-        while on > -100:
-            x = random.randint(0,700)
-            self= random.randint(0, 1000)
-            if self < 800:
-                self = 0
-            elif self < 900:
-                self = 1
-            else:
-                self = 2
-            self.image.append([x, on, self, 0])
-            on -= 50
         
 # ===============   INICIALIZAÇÃO   ===============
         
@@ -75,13 +59,13 @@ tela = pygame.display.set_mode((width,height),0,32) #Tamanho da tela
 pygame.display.set_caption('TESTE PULO') #Nome na aba
 
 # carrega imagem de fundo
-fundo = pygame.image.load("Imagens/Fundo_800x600.png").convert()
+fundo = pygame.image.load("colored_grass.png").convert()
 
-boneco = Boneco("Imagens/Alien_80x80.png",width/2,height/4,0,-1/10)
+boneco = Boneco("alienBlue_stand.png",width/2,height/4,0,-1/10)
 boneco_group = pygame.sprite.Group()
 boneco_group.add(boneco)
 
-plataforma = Plataforma("Imagens/Plataforma_verde.png",width/2,height/2)
+plataforma = Plataforma("ground_grass.png",width/2,height/2)
 plataforma_group = pygame.sprite.Group()
 plataforma_group.add(plataforma)
 
@@ -101,15 +85,13 @@ while sair:
        elif pressed_keys[pygame.K_RIGHT]:
            boneco.vx += 10
            
-    if pygame.sprite.spritecollide(boneco,plataforma_group,False):
-        boneco.vx=-boneco.vx
-        boneco.vy=-boneco.vy
-    
+#Velocidade e Aceleração    
     boneco.rect.y += boneco.vy
     boneco.rect.x += boneco.vx
     boneco.vy += gravity
     
-    if boneco.rect.x > width:#Feito para o objeto "atravessar" as bordas e reaparecer do outro lado
+#Feito para o objeto "atravessar" as bordas e reaparecer do outro lado
+    if boneco.rect.x > width:
         boneco.rect.x = 0
     if boneco.rect.x < 0:
         boneco.rect.x = width-size
