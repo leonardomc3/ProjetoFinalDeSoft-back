@@ -1,0 +1,20 @@
+# ====== BACKGROUND ======
+imagem_de_fundo = pygame.Surface(screen.get_size())
+imagem_de_fundo = imagem_de_fundo.convert()
+img_dir = path.join(path.dirname(__file__), 'img')
+
+class imagem_de_fundo(pygame.sprite.Sprite):
+    def __init__(self, image_file, location):
+        pygame.sprite.Sprite.__init__(self)
+        self.width = width
+        self.height = height
+        self.image = pygame.image.load("Imagens/Fundo_800x600.png").convert()
+        self.rect = self.image.get_rect()
+        self.rect.x, self.rect.y = location
+        self.speedy = 3
+    def update(self):
+        self.rect.y -= self.speedy
+        if self.rect.y <= -self.height:
+            self.rect.y = height
+            
+        
