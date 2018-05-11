@@ -49,20 +49,6 @@ class Plataforma (pygame.sprite.Sprite):
         self.rect.y = pos_y
         self.platforms = [[400, 500, 0, 0]]
         
-    def generatePlatforms(self):
-        on = 600
-        while on > -100:
-            x = random.randint(0,700)
-            self= random.randint(0, 1000)
-            if self < 800:
-                self = 0
-            elif self < 900:
-                self = 1
-            else:
-                self = 2
-            self.image.append([x, on, self, 0])
-            on -= 50
-        
 # ===============   INICIALIZAÇÃO   ===============
         
 pygame.init()
@@ -70,7 +56,7 @@ pygame.init()
 relogio = pygame.time.Clock() #Cria relogio para definir FPS
 
 tela = pygame.display.set_mode((width,height),0,32) #Tamanho da tela
-pygame.display.set_caption('TESTE PULO') #Nome na aba
+pygame.display.set_caption('Jumper') #Nome na aba
 
 # carrega imagem de fundo
 fundo = pygame.image.load("Imagens/Fundo_800x600.png").convert()
@@ -79,13 +65,18 @@ boneco = Boneco("Imagens/Alien_80x80.png",width/2,height/4,0,-1/10)
 boneco_group = pygame.sprite.Group()
 boneco_group.add(boneco)
 
-plataforma = Plataforma("Imagens/Plataforma_verde.png",width/2,height/2)
-plataforma2 = Plataforma("Imagens/Plataforma_verde.png",random.randrange(width),random.randrange(height))
-plataforma3 = Plataforma("Imagens/Plataforma_verde.png",width/3,height/3)
+
 plataforma_group = pygame.sprite.Group()
+
+plataforma = Plataforma("Imagens/Plataforma_verde.png",width/2,height*(95/100))
 plataforma_group.add(plataforma)
-plataforma_group.add(plataforma2)
-plataforma_group.add(plataforma3)
+
+distx=250
+disty=100
+
+while plataforma.rect.y > disty:   #Adicionar plataformar aleatorias
+    plataforma = Plataforma("Imagens/Plataforma_verde.png",plataforma.rect.x + random.randrange(-distx,distx),plataforma.rect.y-disty)
+    plataforma_group.add(plataforma)
 
 # ===============   LOOPING PRINCIPAL   ===============
 sair = True
@@ -94,22 +85,18 @@ while sair:
        if event.type == pygame.QUIT: #Botao de fechar
            sair = False #Sai do loop 
        pressed_keys=pygame.key.get_pressed()
-       if pressed_keys[pygame.K_UP]:
-           boneco.vy -= 10
-       elif pressed_keys[pygame.K_DOWN]:
-           boneco.vx = 0
-       elif pressed_keys[pygame.K_LEFT]:
+       if pressed_keys[pygame.K_LEFT]:
            boneco.vx = -3
        elif pressed_keys[pygame.K_RIGHT]:
            boneco.vx = +3
            
     if pygame.sprite.spritecollide(boneco,plataforma_group,False):
-        #boneco.vx=-boneco.vx
-        #boneco.vy=-boneco.vy
-        boneco.vy = -20
-    
+#        boneco.vx=-boneco.vx
+#        boneco.vy=-boneco.vy
+        boneco.vy = -15
+ 
     boneco.rect.y += boneco.vy
-    boneco.rect.x += boneco.vx
+    boneco.rect.x += boneco.vx*3.5
     boneco.vy += gravity
     
 #Feito para o objeto "atravessar" as bordas e reaparecer do outro lado
