@@ -7,3 +7,4 @@
 - git pull # pegar atualizacoes feitas no repositorio
 - git status # situacao atual
 - dir # ver oq tem dentro
+esdf
