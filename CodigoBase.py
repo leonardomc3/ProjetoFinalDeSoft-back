@@ -7,7 +7,6 @@ Created on Wed May  9 00:51:28 2018
 
 import pygame
 import random
-from random import randrange
 
 white = (255,255,255)
 black = (0,0,0)
@@ -46,7 +45,7 @@ class Plataforma (pygame.sprite.Sprite):
         self.rect.x = pos_x
         self.rect.y = pos_y
         self.platforms = [[400, 500, 0, 0]]
-        
+
 # ===============   INICIALIZAÇÃO   ===============
         
 pygame.init()
@@ -67,6 +66,10 @@ plataforma_group = pygame.sprite.Group()
 
 plataforma = Plataforma("Imagens/Plataforma_verde.png",width/2,height*(95/100))
 plataforma_group.add(plataforma)
+
+plataforma_group2=pygame.sprite.Group()  #plataforma que quebra, **ainda nao esta aleatoria**
+plataforma_quebra=Plataforma("Imagens/Plataforma_Quebra.png",width-100,height*(95/100))
+plataforma_group2.add(plataforma_quebra)
 
 distx=400
 disty=100
@@ -94,14 +97,18 @@ while sair:
        elif pressed_keys[pygame.K_RIGHT]:
            boneco.vx = +3
            
-    if pygame.sprite.spritecollide(boneco,plataforma_group,False):
-#        boneco.vx=-boneco.vx
-#        boneco.vy=-boneco.vy
+    if pygame.sprite.spritecollide(boneco,plataforma_group,False):   #pular encima das plat
         boneco.vy = -15
  
-    boneco.rect.y += boneco.vy
+    boneco.rect.y += boneco.vy      #fisica
     boneco.rect.x += boneco.vx*3.5
     boneco.vy += gravity
+    
+    score=boneco.rect.y  #A janela do jogo tem como ponto mais baixo 600, e conforme\
+                         # a tela sobe a pontuacao desce pois a borda superior eh o\
+                         # 0 e acima disso os numeros passam a ser negativos, \
+                         # devemos pensar em alguma forma de arrumar isso para\
+                         # ter uma pontuacao dependendo da altura.**
     
 #Feito para o objeto "atravessar" as bordas e reaparecer do outro lado
     if boneco.rect.x > width:
@@ -110,21 +117,19 @@ while sair:
         boneco.rect.x = width-size
     if boneco.rect.y > height:
         sair=False
-
+    
+    if pygame.sprite.spritecollide(boneco,plataforma_group2,False): #destroi plataforma que quebra
+        boneco.vy=-15
+        plataforma_group2.remove(plataforma_group2)
+        
     tela.blit(fundo, (0, 0))
     scoretext = myfont.render("Score {0}".format(score), 1, (0,0,0))
     tela.blit(scoretext, (5, 10))
     boneco_group.draw(tela)
     plataforma_group.draw(tela)
+    plataforma_group2.draw(tela)
     pygame.display.update()      #coloca a tela na janela
-    relogio.tick(20) #Define FPS
-
-
-
-
-
-
-
+    relogio.tick(30) #Define FPS
 
 
 pygame.quit() #Sai do jogo
