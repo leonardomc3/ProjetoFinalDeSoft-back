@@ -105,7 +105,7 @@ while sair:
     boneco.vy += gravity
     
     score=boneco.rect.y  #A janela do jogo tem como ponto mais baixo 600, e conforme\
-                         # a tela sobe a pontuacao desce pois a borda superior eh o\
+                         # o jogador sobe a pontuacao desce pois a borda superior eh o\
                          # 0 e acima disso os numeros passam a ser negativos, \
                          # devemos pensar em alguma forma de arrumar isso para\
                          # ter uma pontuacao dependendo da altura.**
