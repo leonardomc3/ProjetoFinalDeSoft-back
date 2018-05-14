@@ -67,16 +67,17 @@ plataforma_group = pygame.sprite.Group()
 plataforma = Plataforma("Imagens/Plataforma_verde.png",width/2,height*(95/100))
 plataforma_group.add(plataforma)
 
-plataforma_group2=pygame.sprite.Group()  #plataforma que quebra, **ainda nao esta aleatoria**
-plataforma_quebra=Plataforma("Imagens/Plataforma_Quebra.png",width-100,height*(95/100))
-plataforma_group2.add(plataforma_quebra)
+plataforma_group2=pygame.sprite.Group()
+
 
 distx=400
-disty=100
+disty=70
 
 while plataforma.rect.y > disty:   #Adicionar plataformar aleatorias
-    plataforma = Plataforma("Imagens/Plataforma_verde.png",plataforma.rect.x + random.randrange(-distx,distx),plataforma.rect.y-disty)
-    plataforma2 = Plataforma("Imagens/Plataforma_verde.png",random.randrange(-distx,distx),plataforma.rect.y-disty)
+    plataforma = Plataforma("Imagens/Plataforma_verde.png",plataforma.rect.x + random.randrange(0,800),plataforma.rect.y-disty)
+    plataforma2 = Plataforma("Imagens/Plataforma_verde.png",random.randrange(0,800),plataforma.rect.y-disty)
+    plataforma_quebra=Plataforma("Imagens/Plataforma_Quebra.png",random.randrange(0,800),plataforma.rect.y-disty)
+    plataforma_group2.add(plataforma_quebra)
     plataforma_group.add(plataforma)
     plataforma_group.add(plataforma2)
 
@@ -102,6 +103,7 @@ while sair:
  
     boneco.rect.y += boneco.vy      #fisica
     boneco.rect.x += boneco.vx*3.5
+    
     boneco.vy += gravity
     
     score=boneco.rect.y  #A janela do jogo tem como ponto mais baixo 600, e conforme\
@@ -118,9 +120,8 @@ while sair:
     if boneco.rect.y > height:
         sair=False
     
-    if pygame.sprite.spritecollide(boneco,plataforma_group2,False): #destroi plataforma que quebra
-        boneco.vy=-15
-        plataforma_group2.remove(plataforma_group2)
+    if pygame.sprite.spritecollide(boneco,plataforma_group2,True): #destroi plataforma que quebra
+        boneco.vy=-15                                              
         
     tela.blit(fundo, (0, 0))
     scoretext = myfont.render("Score {0}".format(score), 1, (0,0,0))
