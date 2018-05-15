@@ -111,6 +111,22 @@ while sair:
                          # 0 e acima disso os numeros passam a ser negativos, \
                          # devemos pensar em alguma forma de arrumar isso para\
                          # ter uma pontuacao dependendo da altura.**
+           #se o boneco subir 1/4 da tela, a janela roda
+    if self.Boneco.rect.top <= HEIGHT / 4:
+        self.Boneco.pos.y += abs(self.Boneco.vel.y)
+        for plataforma in self.plataforma:
+            plataforma.rect.y += abs(self.Boneco.vel.y)
+            if plataforma.rect.top >= HEIGHT:
+                plataforma.kill()
+                
+           #spawnando novas plataformas
+    while len(self.plataforma) < 6:
+        width = random.randrange(50, 100)
+        p = plataforma(random.randrange(0, WIDTH-width),
+                      random.randrange(-75, -30),
+                      width, 20)
+        self.plataforma_group.add(p)
+        self.all_sprites.add(p)
     
 #Feito para o objeto "atravessar" as bordas e reaparecer do outro lado
     if boneco.rect.x > width:
